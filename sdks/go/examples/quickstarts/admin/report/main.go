@@ -1,60 +1,64 @@
 package main
 
 import (
-  "context"
-  "log"
-  "time"
+	"context"
+	"log"
+	"time"
 
-  "golang.org/x/oauth2/google"
-  admin "google.golang.org/api/admin/reports/v1"
-  "google.golang.org/api/option"
+	"golang.org/x/oauth2/google"
+	"golang.org/x/vuln/client"
+	admin "google.golang.org/api/admin/reports/v1"
+	"google.golang.org/api/option"
+apsrvice
+	"internal/factories/client"lint
+	"internal/factories/apiservice"
 )
 
 func main() {
-  // https://pkg.go.dev/google.golang.org/api/admin/reports/v1
-  // https://developers.google.com/admin-sdk/reports/v1/quickstart/go
-  ctx := context.Background()
-  duration, _ := time.ParseDuration("-96h")
+	// https://pkg.go.dev/google.golang.org/api/admin/reports/v1
+	// https://developers.google.com/admin-sdk/reports/v1/quickstart/go
+	ctx := context.Background()
+	duration, _ := time.ParseDuration("-96h")
+	starttime := time.Now().UTC().Add(duration).String()
 
-  client, err := google.DefaultClient(
-    ctx,
-    admin.AdminReportsAuditReadonlyScope)
+	c := client.NewClient()
+	s := new(apiservice.AdminService)
 
-  if err != nil {
-    log.Fatalf("Client credential error %v", err)
-  }
+	client := c.Create(ctx,admin.AdminReportsAuditReadonlyScope)
+	srv = s.Create(ctx, client.Client)
 
-  src, err := admin.NewService(ctx, option.NewHTTPClient(client))
+	resp, err := srv.
+		Activities.List("all", "drive").
+		StartTime(starttime).
+		Do()
 
-  if err != nil {
-    log.Fatalf("Failed to build client using discovery service %v", err)
-  }
+	if err != nil {
+		log.Fatalf("Failed retrieve result from api %v", err)
+	}
 
-  resp, err := src.
-    Activities.List("all", "drive").
-      StartTime(time.Now().UTC().Add(duration)).
-      Do()
+	log.Printf("Items: %v", resp.Items)
 
-  if err != nil {
-    log.Fatalf("Failed retrieve result from api %v", err)
-  }
+	next_page_token := &resp.NextPageToken
+	count := 1
 
-  log.Printf("Items: %v", resp.Items)
+	for next_page_token != nil {
+		resp, err := srv.Activities.List("all", "drive").
+			StartTime(starttime).
+			PageToken(*next_page_token).
+			Do()
 
-  next_page_token := resp.NextPageToken
-  count := 1
+		log.Printf("Page: %v Items: %v", count, resp.Items)
 
-  for next_page_token != nil {
-    resp, err := src.Activities.List("all", "drive").
-      StartTime(time.Now().UTC().Add(duration)).
-      PageToken(next_page_token).
-      Do()
+		if err != nil {
+			log.Fatalf("Failed to paginate result %v", err)
+		}
 
-    log.Printf("Page: %v Items: %v", count, resp.Items)
+		next_page_token := &resp.NextPageToken
 
-    next_page_token := resp.NextPageToken
+		if next_page_token == nil {
+			break
+		}
 
-    if next_page_token == nil { break }
-    count++
-  }
+		count++
+	}
 }
