@@ -3,6 +3,7 @@ package factories
 import (
 	"context"
 	"log"
+	"net/http"
 
 	admin "google.golang.org/api/admin/reports/v1"
 	"google.golang.org/api/option"
@@ -19,8 +20,8 @@ type AdminService struct {
 }
 
 // Create return constructed ApiService including admin service
-func (s *AdminService) Create(ctx context.Context, client *Client) {
-	service, err := admin.NewService(ctx, option.WithHTTPClient(client.Client))
+func (s *AdminService) Create(ctx context.Context, client *http.Client) {
+	service, err := admin.NewService(ctx, option.WithHTTPClient(client))
 
 	if err == nil {
 		log.Fatalf("Failed to build service %v", err)

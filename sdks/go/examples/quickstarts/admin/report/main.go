@@ -2,16 +2,12 @@ package main
 
 import (
 	"context"
+	apiservice "gihub.com/google-api-tutorials/internal/factories"
+	client "gihub.com/google-api-tutorials/internal/factories"
 	"log"
 	"time"
 
-	"golang.org/x/oauth2/google"
-	"golang.org/x/vuln/client"
 	admin "google.golang.org/api/admin/reports/v1"
-	"google.golang.org/api/option"
-apsrvice
-	"internal/factories/client"lint
-	"internal/factories/apiservice"
 )
 
 func main() {
@@ -19,18 +15,15 @@ func main() {
 	// https://developers.google.com/admin-sdk/reports/v1/quickstart/go
 	ctx := context.Background()
 	duration, _ := time.ParseDuration("-96h")
-	starttime := time.Now().UTC().Add(duration).String()
+	startTime := time.Now().UTC().Add(duration).String()
 
 	c := client.NewClient()
 	s := new(apiservice.AdminService)
 
-	client := c.Create(ctx,admin.AdminReportsAuditReadonlyScope)
-	srv = s.Create(ctx, client.Client)
+	c.Create(ctx, admin.AdminReportsAuditReadonlyScope)
+	s.Create(ctx, c.Client)
 
-	resp, err := srv.
-		Activities.List("all", "drive").
-		StartTime(starttime).
-		Do()
+	resp, err := s.Service.Activities.List("all", "drive").StartTime(startTime).Do()
 
 	if err != nil {
 		log.Fatalf("Failed retrieve result from api %v", err)
@@ -38,13 +31,13 @@ func main() {
 
 	log.Printf("Items: %v", resp.Items)
 
-	next_page_token := &resp.NextPageToken
+	nextPageToken := &resp.NextPageToken
 	count := 1
 
-	for next_page_token != nil {
-		resp, err := srv.Activities.List("all", "drive").
-			StartTime(starttime).
-			PageToken(*next_page_token).
+	for nextPageToken != nil {
+		resp, err := s.Service.Activities.List("all", "drive").
+			StartTime(startTime).
+			PageToken(*nextPageToken).
 			Do()
 
 		log.Printf("Page: %v Items: %v", count, resp.Items)
