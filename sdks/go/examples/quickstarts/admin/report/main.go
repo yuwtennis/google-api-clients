@@ -17,12 +17,14 @@ func main() {
 	duration, _ := time.ParseDuration("-96h")
 	startTime := time.Now().UTC().Add(duration).String()
 
+	log.Printf("Initializing client...")
 	c := client.NewClient()
 	s := new(apiservice.AdminService)
 
 	c.Create(ctx, admin.AdminReportsAuditReadonlyScope)
 	s.Create(ctx, c.Client)
 
+	log.Printf("Prepare API object.")
 	resp, err := s.Service.Activities.List("all", "drive").StartTime(startTime).Do()
 
 	if err != nil {
