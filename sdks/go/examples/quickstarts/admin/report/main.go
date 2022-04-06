@@ -48,9 +48,9 @@ func main() {
 			log.Fatalf("Failed to paginate result %v", err)
 		}
 
-		next_page_token := &resp.NextPageToken
+		nextPageToken := &resp.NextPageToken
 
-		if next_page_token == nil {
+		if nextPageToken == nil {
 			break
 		}
 
