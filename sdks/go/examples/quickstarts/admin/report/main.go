@@ -54,7 +54,7 @@ func main() {
 				len(v.Events))
 		}
 
-		if &(resp.NextPageToken) == nil {
+		if &resp.NextPageToken == nil {
 			break
 		}
 
