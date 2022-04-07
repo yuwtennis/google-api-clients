@@ -2,29 +2,34 @@ package main
 
 import (
 	"context"
-	helpers "gihub.com/google-api-tutorials/internal"
-	apiservice "gihub.com/google-api-tutorials/internal/factories"
-	"log"
-	"time"
-
+	"gihub.com/google-api-tutorials/internal/factories"
 	admin "google.golang.org/api/admin/reports/v1"
+	"log"
+	"os"
+	"time"
 )
 
 func main() {
 	// https://pkg.go.dev/google.golang.org/api/admin/reports/v1
 	// https://developers.google.com/admin-sdk/reports/v1/quickstart/go
 	ctx := context.Background()
-	duration, _ := time.ParseDuration("-96h")
+
+	duration, _ := time.ParseDuration("-24h")
 	startTime := time.Now().UTC().Add(duration).Format(time.RFC3339)
 
-	log.Printf("Initializing client...")
-	creds := helpers.LoadDefaultCredentials(ctx, admin.AdminReportsAuditReadonlyScope)
-	s := new(apiservice.AdminService)
+	scopes := []string{admin.AdminReportsAuditReadonlyScope}
+	subjectEmail := os.Getenv("GOOGLE_SUBJECT_EMAIL")
 
-	s.Create(ctx, creds)
+	log.Printf("Initializing client...")
+	c := factories.NewCredential()
+	c.Create(ctx, scopes, subjectEmail)
+
+	s := new(factories.AdminService)
+	s.Create(ctx, c.Credential)
 
 	log.Printf("Prepare API object.")
-	resp, err := s.Service.Activities.List("all", "drive").StartTime(startTime).Do()
+	resp, err := s.Service.Activities.List("all", "drive").
+		StartTime(startTime).Do()
 
 	if err != nil {
 		log.Fatalf("Failed retrieve result from api %v", err)

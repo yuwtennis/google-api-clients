@@ -8,8 +8,8 @@ import (
 	"log"
 )
 
-// APIService is an interface of all google services
-type APIService interface {
+// SErvice is an interface of all google services
+type Service interface {
 	Create(ctx context.Context, creds *google.Credentials)
 }
 
