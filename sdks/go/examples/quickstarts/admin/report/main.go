@@ -55,7 +55,7 @@ func main() {
 		}
 		log.Printf("NextPageToken: %v", resp.NextPageToken)
 
-		if &resp.NextPageToken == nil {
+		if resp.NextPageToken == "" {
 			break
 		}
 
