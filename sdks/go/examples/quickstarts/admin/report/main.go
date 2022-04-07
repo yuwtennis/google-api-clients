@@ -45,11 +45,13 @@ func main() {
 			break
 		}
 
-		log.Printf("Page: #{pageCnt} , Received #{len(resp.Items)} events")
+		log.Printf("Page: #{pageCnt} , Received #{len(resp.Items)} items")
 		for _, v := range resp.Items {
-			for _, w := range v.Events {
-				log.Printf("Record: %v", w)
-			}
+			log.Printf("Activity Record: Id.Time: %v , Id.ApplicationName: %v, Id.UniqueQualifier: %v, Num of Events: %v",
+				v.Id.Time,
+				v.Id.ApplicationName,
+				v.Id.UniqueQualifier,
+				len(v.Events))
 		}
 
 		if &resp.NextPageToken == nil {
