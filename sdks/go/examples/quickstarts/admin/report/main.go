@@ -21,7 +21,7 @@ func main() {
 	scopes := []string{admin.AdminReportsAuditReadonlyScope}
 	subjectEmail := os.Getenv("GOOGLE_SUBJECT_EMAIL")
 
-	log.Printf("Initializing client...")
+	log.Printf("Initializing client. duration: %v, startTime: %v", duration, startTime)
 	c := factories.NewCredential()
 	c.Create(ctx, scopes, subjectEmail)
 
