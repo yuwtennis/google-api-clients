@@ -13,7 +13,7 @@
 go run examples/PATH-TO-MAIN/main.go
 ```
 
-### How to test
+### How to run go test
 
 ```aidl
 make test
