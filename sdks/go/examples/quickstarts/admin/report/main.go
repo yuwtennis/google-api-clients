@@ -28,14 +28,14 @@ func main() {
 	s := new(factories.AdminService)
 	s.Create(ctx, c.Credential)
 
-	var nextPageToken *string = nil
+	var nextPageToken string
 
 	for {
 		req := s.Service.Activities.List("all", "drive").
 			StartTime(startTime)
 
-		if nextPageToken != nil {
-			req = req.PageToken(*nextPageToken)
+		if nextPageToken != "" {
+			req = req.PageToken(nextPageToken)
 		}
 
 		resp, err := req.Do()
@@ -60,9 +60,7 @@ func main() {
 		}
 
 		pageCnt++
-		nextPageToken = &resp.NextPageToken
-
-		log.Printf("NextPageToken: %v", *nextPageToken)
+		nextPageToken = resp.NextPageToken
 
 		time.Sleep(5)
 	}
