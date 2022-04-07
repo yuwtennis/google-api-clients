@@ -1,0 +1,3 @@
+
+unittest:
+	go test ./tests/...
