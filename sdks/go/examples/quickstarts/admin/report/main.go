@@ -28,42 +28,35 @@ func main() {
 	s := new(factories.AdminService)
 	s.Create(ctx, c.Credential)
 
-	log.Printf("Prepare API object.")
-	resp, err := s.Service.Activities.List("all", "drive").
-		StartTime(startTime).Do()
+	var nextPageToken *string = nil
 
-	if err != nil {
-		log.Fatalf("Failed retrieve result from api %v", err)
-	}
+	for {
+		req := s.Service.Activities.List("all", "drive").
+			StartTime(startTime)
 
-	log.Printf("Page: #{pageCnt} , Received #{len(resp.Items)} events")
-	for _, v := range resp.Items {
-		log.Printf("Record: %v", v)
-	}
+		if nextPageToken != nil {
+			req = req.PageToken(*nextPageToken)
+		}
 
-	nextPageToken := &resp.NextPageToken
+		resp, err := req.Do()
 
-	for nextPageToken != nil {
-		pageCnt++
-
-		resp, err := s.Service.Activities.List("all", "drive").
-			StartTime(startTime).
-			PageToken(*nextPageToken).
-			Do()
+		if err != nil {
+			log.Fatalf("Failed to paginate result: %v", err)
+			break
+		}
 
 		log.Printf("Page: #{pageCnt} , Received #{len(resp.Items)} events")
 		for _, v := range resp.Items {
-			log.Printf("Record: %v", v)
+			for _, w := range v.Events {
+				log.Printf("Record: %v", w)
+			}
 		}
 
-		if err != nil {
-			log.Fatalf("Failed to paginate result %v", err)
-		}
-
-		nextPageToken := &resp.NextPageToken
-
-		if nextPageToken == nil {
+		if &resp.NextPageToken == nil {
 			break
 		}
+
+		pageCnt++
+		nextPageToken = &resp.NextPageToken
 	}
 }
