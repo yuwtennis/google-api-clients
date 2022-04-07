@@ -15,7 +15,7 @@ func main() {
 	// https://developers.google.com/admin-sdk/reports/v1/quickstart/go
 	ctx := context.Background()
 	duration, _ := time.ParseDuration("-96h")
-	startTime := time.Now().UTC().Add(duration).String()
+	startTime := time.Now().UTC().Add(duration).Format(time.RFC3339)
 
 	log.Printf("Initializing client...")
 	creds := helpers.LoadDefaultCredentials(ctx, admin.AdminReportsAuditReadonlyScope)
