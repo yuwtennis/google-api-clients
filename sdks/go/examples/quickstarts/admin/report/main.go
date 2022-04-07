@@ -45,7 +45,7 @@ func main() {
 			break
 		}
 
-		log.Printf("Page: %v , Received %v items", pageCnt, len(resp.Items))
+		log.Printf("Page: %v, Received %v items", pageCnt, len(resp.Items))
 		for _, v := range resp.Items {
 			log.Printf("Activity Record: Id.Time: %v , Id.ApplicationName: %v, Id.UniqueQualifier: %v, Num of Events: %v",
 				v.Id.Time,
@@ -54,12 +54,13 @@ func main() {
 				len(v.Events))
 		}
 
-		if resp.NextPageToken == "" {
+		if &(resp.NextPageToken) == nil {
 			break
 		}
 
 		pageCnt++
 		*nextPageToken = resp.NextPageToken
+		log.Printf("NextPageToken: %v", *nextPageToken)
 
 		time.Sleep(5)
 	}
