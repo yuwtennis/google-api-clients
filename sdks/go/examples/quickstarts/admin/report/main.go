@@ -60,7 +60,8 @@ func main() {
 		}
 
 		pageCnt++
-		*nextPageToken = resp.NextPageToken
+		nextPageToken = &resp.NextPageToken
+
 		log.Printf("NextPageToken: %v", *nextPageToken)
 
 		time.Sleep(5)
