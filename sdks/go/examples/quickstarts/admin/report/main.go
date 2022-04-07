@@ -2,8 +2,8 @@ package main
 
 import (
 	"context"
+	helpers "gihub.com/google-api-tutorials/internal"
 	apiservice "gihub.com/google-api-tutorials/internal/factories"
-	client "gihub.com/google-api-tutorials/internal/factories"
 	"log"
 	"time"
 
@@ -18,11 +18,10 @@ func main() {
 	startTime := time.Now().UTC().Add(duration).String()
 
 	log.Printf("Initializing client...")
-	c := client.NewClient()
+	creds := helpers.LoadDefaultCredentials(ctx, admin.AdminReportsAuditReadonlyScope)
 	s := new(apiservice.AdminService)
 
-	c.Create(ctx, admin.AdminReportsAuditReadonlyScope)
-	s.Create(ctx, c.Client)
+	s.Create(ctx, creds)
 
 	log.Printf("Prepare API object.")
 	resp, err := s.Service.Activities.List("all", "drive").StartTime(startTime).Do()

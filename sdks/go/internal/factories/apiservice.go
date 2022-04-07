@@ -2,16 +2,15 @@ package factories
 
 import (
 	"context"
-	"log"
-	"net/http"
-
+	"golang.org/x/oauth2/google"
 	admin "google.golang.org/api/admin/reports/v1"
 	"google.golang.org/api/option"
+	"log"
 )
 
 // APIService is an interface of all google services
 type APIService interface {
-	Create(ctx context.Context, client *Client)
+	Create(ctx context.Context, creds *google.Credentials)
 }
 
 // AdminService holds Service object
@@ -20,8 +19,8 @@ type AdminService struct {
 }
 
 // Create return constructed ApiService including admin service
-func (s *AdminService) Create(ctx context.Context, client *http.Client) {
-	service, err := admin.NewService(ctx, option.WithHTTPClient(client))
+func (s *AdminService) Create(ctx context.Context, creds *google.Credentials) {
+	service, err := admin.NewService(ctx, option.WithCredentials(creds))
 
 	if err == nil {
 		log.Fatalf("Failed to build service %v", err)
