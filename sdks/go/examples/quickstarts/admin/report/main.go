@@ -53,6 +53,7 @@ func main() {
 				v.Id.UniqueQualifier,
 				len(v.Events))
 		}
+		log.Printf("NextPageToken: %v", resp.NextPageToken)
 
 		if &resp.NextPageToken == nil {
 			break
