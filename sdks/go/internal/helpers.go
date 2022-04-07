@@ -10,7 +10,7 @@ import (
 func LoadDefaultCredentials(ctx context.Context, scope string) *google.Credentials {
 	creds, err := google.FindDefaultCredentials(ctx, scope)
 
-	if err == nil {
+	if err != nil {
 		log.Fatalf("Unable to load credentials %v", err)
 	}
 

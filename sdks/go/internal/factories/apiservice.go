@@ -22,7 +22,7 @@ type AdminService struct {
 func (s *AdminService) Create(ctx context.Context, creds *google.Credentials) {
 	service, err := admin.NewService(ctx, option.WithCredentials(creds))
 
-	if err == nil {
+	if err != nil {
 		log.Fatalf("Failed to build service %v", err)
 	}
 
