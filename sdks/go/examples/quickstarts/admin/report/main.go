@@ -14,6 +14,7 @@ func main() {
 	// https://developers.google.com/admin-sdk/reports/v1/quickstart/go
 	ctx := context.Background()
 
+	pageCnt := 1
 	duration, _ := time.ParseDuration("-24h")
 	startTime := time.Now().UTC().Add(duration).Format(time.RFC3339)
 
@@ -35,18 +36,25 @@ func main() {
 		log.Fatalf("Failed retrieve result from api %v", err)
 	}
 
-	log.Printf("Items: %v", resp.Items)
+	log.Printf("Page: #{pageCnt} , Received #{len(resp.Items)} events")
+	for _, v := range resp.Items {
+		log.Printf("Record: %v", v)
+	}
 
 	nextPageToken := &resp.NextPageToken
-	count := 1
 
 	for nextPageToken != nil {
+		pageCnt++
+
 		resp, err := s.Service.Activities.List("all", "drive").
 			StartTime(startTime).
 			PageToken(*nextPageToken).
 			Do()
 
-		log.Printf("Page: %v Items: %v", count, resp.Items)
+		log.Printf("Page: #{pageCnt} , Received #{len(resp.Items)} events")
+		for _, v := range resp.Items {
+			log.Printf("Record: %v", v)
+		}
 
 		if err != nil {
 			log.Fatalf("Failed to paginate result %v", err)
@@ -57,7 +65,5 @@ func main() {
 		if nextPageToken == nil {
 			break
 		}
-
-		count++
 	}
 }
