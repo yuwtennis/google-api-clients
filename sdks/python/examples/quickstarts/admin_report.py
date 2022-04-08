@@ -28,6 +28,8 @@ if __name__ == "__main__":
         "startTime": f"{start_time.isoformat()}Z"
     }
 
+    logger.info("Initializing client. startTime: %s", start_time)
+
     creds = CredentialFactory.create_with_subject(scopes,subject_email)
     service = ServiceFactory.create("admin", "reports_v1", creds)
 
