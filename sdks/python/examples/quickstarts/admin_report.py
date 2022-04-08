@@ -53,7 +53,7 @@ if __name__ == "__main__":
         if "nextPageToken" not in resp:
             break
 
-        logger.info("NextPageToken: %s", resp["NextPageToken"])
+        logger.info("NextPageToken: %s", resp["nextPageToken"])
         next_page_token = resp.get('nextPageToken')
         page_cnt += 1
 
