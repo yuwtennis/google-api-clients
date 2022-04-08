@@ -34,10 +34,9 @@ if __name__ == "__main__":
     activities = service.activities()
     request = activities.list(**params)
 
+    # https://googleapis.github.io/google-api-python-client/docs/pagination.html
     while request is not None:
-
         resp = request.execute()
-
         items = resp.get('items', [])
 
         logger.info("Page: %s, Received %d items", page_cnt, len(items))
