@@ -64,4 +64,6 @@ func main() {
 
 		time.Sleep(5)
 	}
+
+	log.Printf("Finished polling.")
 }

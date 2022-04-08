@@ -52,3 +52,5 @@ if __name__ == "__main__":
         page_cnt += 1
 
         time.sleep(5)
+
+    logger.info("Finished polling.")
