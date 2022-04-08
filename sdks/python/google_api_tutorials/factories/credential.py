@@ -25,7 +25,7 @@ class CredentialFactory:
 
         """
         creds = service_account.Credentials.from_service_account_file(os.getenv("GOOGLE_APPLICATION_CREDENTIAL"))
-        creds.with_scopes(scopes)
-        creds.with_subject(subject_email)
+        scoped_cred = creds.with_scopes(scopes)
+        delegated_cred = scoped_cred.with_subject(subject_email)
 
-        return creds
+        return delegated_cred
