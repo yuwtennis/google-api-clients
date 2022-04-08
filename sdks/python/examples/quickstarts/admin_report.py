@@ -31,13 +31,13 @@ if __name__ == "__main__":
         params = {
             "userKey" : "all",
             "applicationName": "drive",
-            "startTime": start_time.isoformat()
+            "startTime": f"{start_time.isoformat()}Z"
         }
 
         if next_page_token != "":
             params["pageToken"] = next_page_token
 
-        resp = service.activities().list(**params)
+        resp = service.activities().list(**params).execute()
 
         items = resp.get('items', [])
 
