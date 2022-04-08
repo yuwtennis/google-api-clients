@@ -21,7 +21,7 @@ if __name__ == "__main__":
     scopes = ["https://www.googleapis.com/auth/admin.reports.audit.readonly"]
     subject_email = os.getenv("GOOGLE_SUBJECT_EMAIL")
     next_page_token = ""
-    start_time = datetime.datetime.utcnow() - datetime.timedelta(hours=96)
+    start_time = datetime.datetime.utcnow() - datetime.timedelta(hours=24)
     page_cnt = 1
 
     creds = CredentialFactory.create_with_subject(scopes,subject_email)
