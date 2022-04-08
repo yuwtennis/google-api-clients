@@ -25,7 +25,7 @@ if __name__ == "__main__":
     page_cnt = 1
 
     creds = CredentialFactory.create_with_subject(scopes,subject_email)
-    service = ServiceFactory("admin", "reports_v1", creds)
+    service = ServiceFactory.create("admin", "reports_v1", creds)
 
     while True:
         params = {
