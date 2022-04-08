@@ -20,24 +20,23 @@ if __name__ == "__main__":
 
     scopes = ["https://www.googleapis.com/auth/admin.reports.audit.readonly"]
     subject_email = os.getenv("GOOGLE_SUBJECT_EMAIL")
-    next_page_token = ""
     start_time = datetime.datetime.utcnow() - datetime.timedelta(hours=24)
     page_cnt = 1
+    params = {
+        "userKey" : "all",
+        "applicationName": "drive",
+        "startTime": f"{start_time.isoformat()}Z"
+    }
 
     creds = CredentialFactory.create_with_subject(scopes,subject_email)
     service = ServiceFactory.create("admin", "reports_v1", creds)
 
-    while True:
-        params = {
-            "userKey" : "all",
-            "applicationName": "drive",
-            "startTime": f"{start_time.isoformat()}Z"
-        }
+    activities = service.activities()
+    request = activities.list(**params)
 
-        if next_page_token != "":
-            params["pageToken"] = next_page_token
+    while request is not None:
 
-        resp = service.activities().list(**params).execute()
+        resp = request.execute()
 
         items = resp.get('items', [])
 
@@ -50,11 +49,7 @@ if __name__ == "__main__":
                         item['id']['uniqueQualifier'],
                         len(item['events']))
 
-        if "nextPageToken" not in resp:
-            break
-
-        logger.info("NextPageToken: %s", resp["nextPageToken"])
-        next_page_token = resp.get('nextPageToken')
+        request = activities.list_next(request, resp)
         page_cnt += 1
 
         time.sleep(5)
