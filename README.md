@@ -81,4 +81,4 @@ make lint
 | variable | description                                                                                                                                                               | default |
 | -------- |---------------------------------------------------------------------------------------------------------------------------------------------------------------------------| ------- |
 | GOOGLE_DEFAULT_CREDENTIALS | See [doc](https://cloud.google.com/docs/authentication/production#passing_variable)                                                                                       | no default |
-| GOOGLE_SUBJECT_EMAIL | User email to impersonate . Required for [Google Workspace Domain-Wide Delegation of Authority](https://developers.google.com/admin-sdk/directory/v1/guides/delegation) . |
+| GOOGLE_SUBJECT_EMAIL | User email to impersonate . Required for [Google Workspace Domain-Wide Delegation of Authority](https://developers.google.com/admin-sdk/directory/v1/guides/delegation) . | no default |
