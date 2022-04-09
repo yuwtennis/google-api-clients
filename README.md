@@ -61,6 +61,7 @@ make unittest
 ```markdown
 cd go/
 make vet
+# https://staticcheck.io/
 make staticscan
 ```
 
