@@ -62,7 +62,7 @@ func main() {
 		pageCnt++
 		nextPageToken = resp.NextPageToken
 
-		time.Sleep(5)
+		time.Sleep(5 * time.Second)
 	}
 
 	log.Printf("Finished polling.")

@@ -10,7 +10,9 @@ This repository is to contribute to people like me.
 * [Tutorials](#tutorials)
   * [How to run examples](#how-to-run-examples)
   * [How to run tests](#how-to-run-tests)
+  * [How to run lint](#how-to-run-lint)
 * [Available environment variables](#available-environment-variables)
+  * [admin/report](#adminreport)
 
 ## Available examples
 
@@ -61,6 +63,7 @@ make unittest
 ```markdown
 cd go/
 make vet
+# https://staticcheck.io/
 make staticscan
 ```
 
