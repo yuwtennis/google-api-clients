@@ -1,3 +1,9 @@
 
 unittest:
 	go test ./tests/...
+
+vet:
+	go vet ./...
+
+staticcheck:
+	staticcheck ./...
