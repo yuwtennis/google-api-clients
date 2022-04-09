@@ -54,6 +54,23 @@ cd python/
 make unittest
 ```
 
+### How to run lint
+
+#### go
+
+```markdown
+cd go/
+make vet
+make staticscan
+```
+
+#### python
+
+```markdown
+cd python/
+make lint
+```
+
 ## Available environment variables
 
 ### admin/report
