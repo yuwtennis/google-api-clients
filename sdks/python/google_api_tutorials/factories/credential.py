@@ -24,7 +24,7 @@ class CredentialFactory:
             https://google-auth.readthedocs.io/en/master/reference/google.auth.credentials.html#google.auth.credentials.Credentials
 
         """
-        creds = service_account.Credentials.from_service_account_file(os.getenv("GOOGLE_APPLICATION_CREDENTIAL"))
+        creds = service_account.Credentials.from_service_account_file(os.getenv("GOOGLE_APPLICATION_CREDENTIALS"))
         scoped_cred = creds.with_scopes(scopes)
         delegated_cred = scoped_cred.with_subject(subject_email)
 
